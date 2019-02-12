@@ -2,10 +2,10 @@
 This project creates a number of analytical reports on data found 
 in the news database.  This project uses python3.
 
-## Required Librarys
+## Required Libraries
 [Psycopg2](http://initd.org/psycopg/docs/)
 
-## Instructions.
+## Instructions
 
 The following view was created to support this program.  You can run
 this query from the psql command prompt.:
