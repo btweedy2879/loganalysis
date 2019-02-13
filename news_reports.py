@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Generate a set of analytical reports for the
 # News data database.
 
