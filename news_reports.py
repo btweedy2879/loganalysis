@@ -55,15 +55,19 @@ def getMostPopularArticles(numArticles):
 
     displayTemplate = "## \"{0}\"--{1:d}"
     q = """
-        select title, count(*) as views
-        from articles join log
+        select title, sum(views)
+        from articles
+        join
+            (select path, count(path) as views
+             from log
+             group by log.path) as log
             on log.path = '/article/'||articles.slug
         group by articles.title
-        order by views desc
+        order by sum(views) desc
         limit (%s);
     """
 
-    articles = runQuery(q, (3,))
+    articles = runQuery(q, (numArticles,))
 
     if len(articles) > 0:
         for a in articles:
@@ -85,12 +89,16 @@ def getMostPopularAuthors():
 
     displayTemplate = "## {0}--{1:d} views"
     q = """
-        select name, count(*) as views
+        select name, sum(views)
         from authors
             join articles on articles.author = authors.id
-            join log on log.path = '/article/' ||articles.slug
-        group by authors.name
-        order by views desc;
+            join
+                (select path, count(path) as views
+                 from log
+                 group by log.path) as log
+                on log.path = '/article/' || articles.slug
+        group by name
+        order by sum(views) desc;
     """
 
     authors = runQuery(q)
