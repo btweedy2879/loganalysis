@@ -53,9 +53,9 @@ def getMostPopularArticles(numArticles):
 
     doSectionHeader("Top articles by number of views")
 
-    displayTemplate = "## \"{0}\"--{1:d}"
+    displayTemplate = "## \"{0}\"--{1:f}"
     q = """
-        select title, sum(views)
+        select title, sum(views) as views
         from articles
         join
             (select path, count(path) as views
@@ -63,7 +63,7 @@ def getMostPopularArticles(numArticles):
              group by log.path) as log
             on log.path = '/article/'||articles.slug
         group by articles.title
-        order by sum(views) desc
+        order by views desc
         limit (%s);
     """
 
@@ -87,9 +87,9 @@ def getMostPopularAuthors():
 
     doSectionHeader("Author popularity by views")
 
-    displayTemplate = "## {0}--{1:d} views"
+    displayTemplate = "## {0}--{1:f} views"
     q = """
-        select name, sum(views)
+        select name, sum(views) as views
         from authors
             join articles on articles.author = authors.id
             join
@@ -98,7 +98,7 @@ def getMostPopularAuthors():
                  group by log.path) as log
                 on log.path = '/article/' || articles.slug
         group by name
-        order by sum(views) desc;
+        order by views desc;
     """
 
     authors = runQuery(q)
@@ -159,14 +159,8 @@ def doSectionFooter():
     print("##\n## -----------------------------------\n##")
 
 
-##
-# Runs the program.
-#
-##
-def run():
+# run()
+if __name__ == '__main__':
     getMostPopularArticles(3)
     getMostPopularAuthors()
     getHighErrorDays()
-
-
-run()
