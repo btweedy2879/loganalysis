@@ -1,4 +1,4 @@
-## Generate a set of analytical reports for the
+# Generate a set of analytical reports for the
 # News data database.
 
 import datetime
@@ -23,6 +23,8 @@ DBNAME = "news"
 # @return {void} if an error occured during the query, the
 # function simply returns.
 ##
+
+
 def runQuery(query, query_params=None):
 
     db = psycopg2.connect(database=DBNAME)
@@ -125,7 +127,7 @@ def getHighErrorDays():
 
     if len(days) > 0:
         for d in days:
-            print(displayTemplate.format(d[0].strftime("%B, %d %Y"),d[3]))
+            print(displayTemplate.format(d[0].strftime("%B, %d %Y"), d[3]))
 
     doSectionFooter()
 
